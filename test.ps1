@@ -1,7 +1,4 @@
-$directory='E:\Setup_project\'
-
-Set-Location $directory\Taskbar
-
-& .\success.ps1
-
-Read-Host -Prompt "Press Enter to continue"
+$test = (Read-Host -Prompt "Is this a laptop or a desktop?(type l or d)")
+$test=(Get-culture).TextInfo.ToTitleCase($test.ToLower())
+$test
+Read-Host -Prompt "end"

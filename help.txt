@@ -1,0 +1,26 @@
+Folders:
+
+•app_installers: Installers for apps which should be installed.
+•apps_to_run: Shortcuts to apps and settings which will open at the end of setup.
+•desktop_icons(desktop): Icons which will be added to the desktop on desktop PCs.
+•desktop_icons(laptop): Icons which will be added to the desktop on laptop PCs.
+•files: Various files needed during setup.
+    default_layout: The default start menu layout for windows.
+    desktop-start: The start menu layout which will be applied to desktop PCs. (only for new users)
+    laptop-start: The start menu layout which will be applied to laptop PCs. (only for new users)
+    MyDefaultAppAssociations-laptop.xml: Contains default app associations. (only for new users)
+    reg_taskbar_desktop.reg: Reg file needed for taskbar icons on desktop PCs.
+    reg_taskbar_laptop.reg: Reg file needed for taskbar icons on laptop PCs.
+    Show_toolbars.reg: Reg files to set IE toolbar as shown.
+    Trusted_site.reg: Reg file to add trusted site in Internet Options.
+•IE-bookmarks: Bookmarks which will be added as bookmarks on IE toolbar.
+•Taskbar_icons: Icons which will be set as shortcuts on taskbar. (needs additional reg files)
+
+Scripts:
+
+•Cleanup: Resets start menu layout for new users back to default. (NEEDS TO BE RUN AS ADMIN)
+•elevator-setup: Runs "setup.ps1" as an administrator.
+•full: contains all commands written so far. (might be out of date) (DO NOT RUN)
+•main: Sets up the current user (desktop, IE, taskbar, and runs "cleanup.ps1" as admin)
+•pc: contains the command required to change windows execution policy. (scripts will not run if the command is not ran first.)
+•setup: sets up the pc for the new user (installs apps, sets start layout, creates new users, renames PC, etc.) (NEEDS TO BE RUN AS ADMIN)

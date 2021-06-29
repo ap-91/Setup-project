@@ -1,43 +1,18 @@
 #start
 
-$directory=Get-Location
-Set-Location $directory
-#>
-
-<#elevate script
-
-function Test-Admin {
-    $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
-    $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
-}
-
-if ((Test-Admin) -eq $false)  {
-    if ($elevated) {
-        # tried to elevate, did not work, aborting
-    } else {
-        Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
-    }
-    exit
-}
-
-'running with full privileges'
-#>
-
-<#set default apps for new users
-Write-Host "Setting default apps"
-dism /online /Import-DefaultAppAssociations:".files\MyDefaultAppAssociations.xml"
-Read-Host -Prompt "Default apps set. Press Enter to continue"
+$PSScriptRoot
+Set-Location $PSScriptRoot
 #>
 
 #install applications
 Write-Host "Installing apps"
-Get-ChildItem .\app_installers|ForEach-Object {Start-Process $_.FullName ALLUSERS=1}
+Get-ChildItem $PSScriptRoot\app_installers|ForEach-Object {Start-Process $_.FullName ALLUSERS=1}
 Read-Host -Prompt "Apps installed. Press Enter to continue"
 #>
 
 #import start layout
 Write-Host "Importing Start button layout"
-Import-StartLayout -LayoutPath .\files\desired_layout -MountPath C:\
+Import-StartLayout -LayoutPath $PSScriptRoot\files\desired_layout -MountPath C:\
 Read-Host -Prompt "Start button layout imported. Press Enter to continue"
 #>
 
@@ -85,24 +60,24 @@ Read-Host -Prompt "Current user is disabled. Press Enter to continue"
 
 #add desktop icons
 Write-Host "Adding desktop icons"
-Copy-Item -Path ".\desktop_icons\*" -Destination "~\Desktop" -Recurse
+Copy-Item -Path "$PSScriptRoot\desktop_icons\*" -Destination "~\Desktop" -Recurse
 Read-Host -Prompt "Desktop icons added. Press Enter to continue"
 #>
 
 #set IE settings
 #import bookmarks into internet explorer
 Write-Host "importing bookmarks into IE"
-Copy-Item -Path ".\IE_bookmarks\*" -Destination "~\favorites\links"
+Copy-Item -Path "$PSScriptRoot\IE_bookmarks\*" -Destination "~\favorites\links"
 Write-Host "bookmarks imported"
 #set IE home page
 $HomeURL='http://www.parliament.cy/'
 set-ItemProperty -Path 'HKCU:\Software\Microsoft\Internet Explorer\main' -Name "Start Page" -Value $HomeURL
 Write-Host "Home page set"
 #set trusted sites
-reg import .\files\Trusted_site.reg
+reg import $PSScriptRoot\files\Trusted_site.reg
 Write-Host "trusted sites added"
 #show toolbars
-reg import .\files\Show_toolbars.reg
+reg import $PSScriptRoot\files\Show_toolbars.reg
 Write-Host "toolbars shown"
 Read-Host -Prompt "Press Enter to continue"
 #>
@@ -110,21 +85,21 @@ Read-Host -Prompt "Press Enter to continue"
 #add shortcuts to taskbar
 Write-Host "Adding shortcuts to taskbar"
 Remove-Item -Path "~\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\*"
-Copy-Item -Path ".\TaskBar_icons\*" -Destination "~\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar" -Recurse
-reg import .\files\reg_taskbar.reg
+Copy-Item -Path "$PSScriptRoot\TaskBar_icons\*" -Destination "~\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar" -Recurse
+reg import $PSScriptRoot\files\reg_taskbar.reg
 Stop-Process -Name explorer
 Read-Host -Prompt "Taskbar shortcuts added. Press Enter to continue"
 #>
 
 #run apps for initialisation
 Write-Host "Launching apps"
-Get-ChildItem .\apps_to_run|ForEach-Object {Start-Process $_.FullName}
+Get-ChildItem $PSScriptRoot\apps_to_run|ForEach-Object {Start-Process $_.FullName}
 Read-Host -Prompt "Apps launched. Press Enter to continue"
 #>
 
 #reset start layout
 Write-Host "Resetting Start menu layout"
-Import-StartLayout -LayoutPath .\files\default_layout -MountPath C:\
+Import-StartLayout -LayoutPath $PSScriptRoot\files\default_layout -MountPath C:\
 Read-Host -Prompt "Start menu layout reset. Press Enter to continue"
 #>
 

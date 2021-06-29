@@ -1,0 +1,1 @@
+Start-Process powershell.exe -verb runas -ArgumentList "$PSScriptRoot\setup.ps1"
