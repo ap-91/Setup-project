@@ -3,3 +3,4 @@ to do list
 set default apps (edge and acrobat)
 set IP
 set proxy
+rename default user instead of creating new user (with admin rights)

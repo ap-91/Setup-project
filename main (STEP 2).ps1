@@ -2,11 +2,9 @@
 Set-Location $PSScriptRoot
 $PSScriptRoot
 
-#pc type
-$pctype = Read-Host -Prompt "Is this a laptop or a desktop?(type l or d)"
+. .\flags.ps1 #import variables from "flags.ps1"
 
 #add desktop icons
-$desktop_icon_flag = Read-Host -Prompt "add desktop shortcuts?[y]"
 if ($desktop_icon_flag -eq 'y') {
     Write-Host "Adding desktop icons"
     if ($pctype -eq 'l') {
@@ -20,28 +18,28 @@ if ($desktop_icon_flag -eq 'y') {
 #>
 
 #set IE settings
-$IE_settings_flag = Read-Host -Prompt "set IE settings?[y]"
 if ($IE_settings_flag -eq 'y') {
     #import bookmarks into internet explorer
     Write-Host "importing bookmarks into IE"
-    Copy-Item -Path "$PSScriptRoot\IE_bookmarks\*" -Destination "~\favorites\links"
+    Copy-Item -Path "$PSScriptRoot\IE_bookmarks\*" -Destination "~\favorites\links" #links='favorites bar'
     Write-Host "bookmarks imported"
     #set IE home page
     $HomeURL = 'http://www.parliament.cy/'
-    set-ItemProperty -Path 'HKCU:\Software\Microsoft\Internet Explorer\main' -Name "Start Page" -Value $HomeURL
+    set-ItemProperty -Path 'HKCU:\Software\Microsoft\Internet Explorer\main' -Name "Start Page" -Value $HomeURL #sets home page
     Write-Host "Home page set"
     #set trusted sites
-    reg import $PSScriptRoot\files\Trusted_site.reg
+    new-Item -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\govcloud.gov.cy' #create reg folder
+    set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\govcloud.gov.cy' -Name "https" -Value 2 #set folder as trusted
     Write-Host "trusted sites added"
     #show toolbars
-    reg import $PSScriptRoot\files\Show_toolbars.reg
+    set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Internet Explorer\MINIE' -Name "AlwaysShowMenus" -Value 1
+    set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Internet Explorer\MINIE' -Name "LinksBandEnabled" -Value 1
     Write-Host "toolbars shown"
     Read-Host -Prompt "Press Enter to continue"
 }
 #>
 
 #add shortcuts to taskbar
-$taskbar_flag = Read-Host -Prompt "set taskbar shortcuts?[y]"
 if ($taskbar_flag -eq 'y') {
     Write-Host "Adding shortcuts to taskbar"
     Remove-Item -Path "~\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\*"
@@ -58,7 +56,6 @@ if ($taskbar_flag -eq 'y') {
 #>
 
 #run cleanup as admin
-$cleanup_flag = Read-Host -Prompt "run cleanup?[y]"
 if ($cleanup_flag -eq 'y') {
     Start-Process powershell.exe -verb runas -ArgumentList "$PSScriptRoot\cleanup.ps1"
 }

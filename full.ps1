@@ -6,13 +6,13 @@ Set-Location $PSScriptRoot
 
 #install applications
 Write-Host "Installing apps"
-Get-ChildItem $PSScriptRoot\app_installers|ForEach-Object {Start-Process $_.FullName ALLUSERS=1}
+Get-ChildItem $PSScriptRoot\app_installers|ForEach-Object {Start-Process $_.FullName ALLUSERS=1}  
 Read-Host -Prompt "Apps installed. Press Enter to continue"
 #>
 
 #import start layout
 Write-Host "Importing Start button layout"
-Import-StartLayout -LayoutPath $PSScriptRoot\files\desired_layout -MountPath C:\
+Import-StartLayout -LayoutPath $PSScriptRoot\files\desired_layout -MountPath C:\ #ip
 Read-Host -Prompt "Start button layout imported. Press Enter to continue"
 #>
 
