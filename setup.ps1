@@ -53,8 +53,8 @@ if ($start_layout_flag -eq 'y') {
 #create standard user, prompt for password
 if ($custom_user_flag -eq 'y') {
     Write-Host "Creating Standard User"
-    $user_name = (Read-Host -Prompt 'Username').ToUpper() #ask for username and then convert it to all caps
-    $Full_name = Read-Host -Prompt 'Full name'
+    $user_name = (Read-Host -Prompt 'Username').ToUpper() #ask for username and then convert it to all caps. Format: Last name+First anme initial eg. Panayiotoua)
+    $Full_name = Read-Host -Prompt 'Full name' #Format: Last name + First name. eg. Panayiotou Alexandros
     $Full_name = (Get-culture).TextInfo.ToTitleCase($Full_name.ToLower()) #sets fullname in title case
     Read-Host -Prompt "Username: $user_name. Full name: $Full_name. Press Enter to continue" #confirmation
     New-LocalUser $user_name -FullName $Full_name -Description $Full_name -PasswordNeverExpires #create user with $user_name as username, $Full_name as full name and description.
@@ -94,7 +94,7 @@ if ($default_admin_flag -eq 'y') {
 #>
 
 #disable current user and remove password
-$disable_current_account_flag = (Read-Host -Prompt "disable current user?[y]").ToLower()
+#$disable_current_account_flag = (Read-Host -Prompt "disable current user?[y]").ToLower()
 if ($disable_current_account_flag -eq 'y') {
     Write-Host "Disabling current user"
     $current_user = [Environment]::UserName #find current user's username
@@ -104,7 +104,7 @@ if ($disable_current_account_flag -eq 'y') {
 }
 #>
 
-$restart_flag = Read-Host -Prompt "restart pc?[y]"
+#$restart_flag = Read-Host -Prompt "restart pc?[y]"
 if ($restart_flag -eq 'y') {
     Restart-computer
 }
