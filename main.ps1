@@ -23,17 +23,22 @@ if ($IE_settings_flag -eq 'y') {
     Write-Host "importing bookmarks into IE"
     Copy-Item -Path "$PSScriptRoot\IE_bookmarks\*" -Destination "~\favorites\links" #links='favorites bar'
     Write-Host "bookmarks imported"
+    Read-Host -Prompt "Press Enter to continue"
     #set IE home page
     $HomeURL = 'http://www.parliament.cy/'
     set-ItemProperty -Path 'HKCU:\Software\Microsoft\Internet Explorer\main' -Name "Start Page" -Value $HomeURL #sets home page
     Write-Host "Home page set"
+    Read-Host -Prompt "Press Enter to continue"
     #set trusted sites
-    new-Item -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\govcloud.gov.cy' #create reg folder
-    set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\govcloud.gov.cy' -Name "https" -Value 2 #set folder as trusted
+    #new-Item -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\govcloud.gov.cy' #create reg folder
+    #set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\govcloud.gov.cy' -Name "https" -Value 2 #set folder as trusted
+    reg import "$PSScriptRoot\files\Trusted_site.reg"
     Write-Host "trusted sites added"
+    Read-Host -Prompt "Press Enter to continue"
     #show toolbars
-    set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Internet Explorer\MINIE' -Name "AlwaysShowMenus" -Value 1
-    set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Internet Explorer\MINIE' -Name "LinksBandEnabled" -Value 1
+    #set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Internet Explorer\MINIE' -Name "AlwaysShowMenus" -Value 1
+    #set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Internet Explorer\MINIE' -Name "LinksBandEnabled" -Value 1
+    reg import "$PSScriptRoot\files\Show_toolbars.reg"
     Write-Host "toolbars shown"
     Read-Host -Prompt "Press Enter to continue"
 }
@@ -43,7 +48,7 @@ if ($IE_settings_flag -eq 'y') {
 if ($taskbar_flag -eq 'y') {
     Write-Host "Adding shortcuts to taskbar"
     Remove-Item -Path "~\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\*"
-    Copy-Item -Path "$PSScriptRoot\TaskBar_icons\*" -Destination "~\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar" -Recurse
+    Copy-Item -Path "$PSScriptRoot\TaskBar_icons\*" -Destination "~\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar" -Recurse -Force
     if ($pctype -eq 'l') {
         reg import $PSScriptRoot\files\reg_taskbar_laptop.reg
     }

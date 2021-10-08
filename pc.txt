@@ -1,1 +1,1 @@
-set-executionpolicy remotesigned -Confirm:$false
+set-executionpolicy bypass -Confirm:$false

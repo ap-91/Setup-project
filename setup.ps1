@@ -58,8 +58,10 @@ if ($custom_user_flag -eq 'y') {
     $Full_name = (Get-culture).TextInfo.ToTitleCase($Full_name.ToLower()) #sets fullname in title case
     Read-Host -Prompt "Username: $user_name. Full name: $Full_name. Press Enter to continue" #confirmation
     New-LocalUser $user_name -FullName $Full_name -Description $Full_name -PasswordNeverExpires #create user with $user_name as username, $Full_name as full name and description.
-    Add-LocalGroupMember -Group "Users" -Member $user_name #add user to the 'users' group
+Start-Sleep -Seconds 1    
+Add-LocalGroupMember -Group "Users" -Member $user_name #add user to the 'users' group
     if ($custom_user_admin_rights_flag -eq 'y') {
+Start-Sleep -Seconds 1
         Add-LocalGroupMember -Group "Administrators" -Member $user_name #add user to 'Administrators' group (if needed)
     }
     Read-Host -Prompt "Standard User Created. Press Enter to continue"

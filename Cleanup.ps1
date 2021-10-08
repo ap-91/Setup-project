@@ -14,3 +14,5 @@ Write-Host "Resetting policy"
 set-executionpolicy Default -Confirm:$false #resets the execution policy back to default for security reasons.
 Read-Host -Prompt "Policy reset. Press Enter to continue"
 #>
+
+Get-ChildItem .\apps_to_run\* | ForEach-Object { Start-Process $_}

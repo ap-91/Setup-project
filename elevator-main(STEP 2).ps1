@@ -1,0 +1,1 @@
+Start-Process powershell.exe -verb runas -ArgumentList "$PSScriptRoot\main.ps1" #launches 'main.ps1' script as an administrator. (this scripts does not need admin rights to run)
