@@ -22,13 +22,32 @@ $cleanup_flag
 #>
 
 #install applications
+
 if ($install_apps_flag -eq 'y') {
     Write-Host "Installing apps"
+    Start-Process -FilePath ".\app_installers\AcroRdrDC2100720099_en_US.exe" -Wait #adobe
+    Start-Process -FilePath ".\app_installers\Agent+Endpoint (No License).exe" -Wait #ESET
+    #Start-Process -FilePath ".\app_installers\ChromeStandaloneSetup64.exe" -Wait #chrome
+	Start-Process -FilePath ".\app_installers\googlechromestandaloneenterprise64.msi" -Wait #chrome
+    if ($pctype -eq 'l') {
+        Start-Process -FilePath ".\app_installers\Webex.msi" ALLUSERS=1 -Wait
+        Start-Process -FilePath ".\app_installers\ZoomInstallerFull.msi" -Wait
+    }
+    else {
+        Write-Error "invalid flag. variable 'pctype' should be either 'd'or 'l'. currently it is $pctype "
+    }
+    Read-Host -Prompt "Apps installed. Press Enter to continue"
+}
+#>
+
+
+<#if ($install_apps_flag -eq 'y') {
+    Write-Host "Installing apps"
     if ($pctype -eq 'd') {
-        Get-ChildItem .\app_installers\* -Exclude excluded, laptop | ForEach-Object { Start-Process $_.FullName ALLUSERS=1 } #find all files in 'app_installers' folder excluding subfolders 'laptop' and 'excluded'. Then run each file found        Read-Host -Prompt "Apps installed. Press Enter to continue"
+        Get-ChildItem .\app_installers\* -Exclude excluded, laptop | ForEach-Object { Start-Process $_.FullName ALLUSERS=1  } #find all files in 'app_installers' folder excluding subfolders 'laptop' and 'excluded'. Then run each file found        Read-Host -Prompt "Apps installed. Press Enter to continue"
     }
     elseif ($pctype -eq 'l') {
-        Get-ChildItem .\app_installers\* -Exclude excluded | ForEach-Object { Start-Process $_.FullName ALLUSERS=1 } #include 'laptop' subfolder if pctype is laptop
+        Get-ChildItem .\app_installers\* -Exclude excluded | ForEach-Object { Start-Process $_.FullName ALLUSERS=1 -wait} #include 'laptop' subfolder if pctype is laptop
         Read-Host -Prompt "Apps installed. Press Enter to continue"
     }
     else {
@@ -84,7 +103,7 @@ if ($workgroup_flag -eq 'y') {
 }
 
 #enable default admin user
-$default_admin_flag = (Read-Host -Prompt "enable default admin account?[y]").ToLower()
+#$default_admin_flag = (Read-Host -Prompt "enable default admin account?[y]").ToLower()
 if ($default_admin_flag -eq 'y') {
     Write-Host "Enabling Administrator account"
     Get-LocalUser -Name "Administrator" | Enable-LocalUser #enables default admin user
